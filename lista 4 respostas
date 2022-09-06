@@ -1,0 +1,209 @@
+questão 1 
+
+#include<stdio.h>
+#include<stdlib.h>
+
+//letra a
+  typedef struct ingresso{
+	//declaração de variavel e seus tipos
+	float preco;
+	char local[10];
+	char atracao[10];
+	
+	}ingresso;
+	
+	void preenche(ingresso* i);
+	void imprime(ingresso* i);
+	void altera_preco(ingresso* i, float valor);
+	void imprime_menor_maior_preco(int n, ingresso* vet);
+	
+	//letra e	
+	int main (void){
+		
+		ingresso *i;
+		i=(ingresso*)malloc(sizeof(ingresso));
+		preenche(i);
+		imprime(i);
+		free(i);
+		return 0;	
+	}
+	
+	void preenche(ingresso* i){
+		
+	printf("\n digite o endereco:\n ");
+		scanf(" %[^\n]", &i->local);
+	printf("\n digite a atracao:\n ");
+		scanf(" %[^\n]", &i->atracao);
+		printf("\n digite o preco do ingresso:\n ");
+		scanf("%f", &i->preco);
+}	
+//letra b
+	void imprime(ingresso* i){
+	printf("preco do ingresso: %f\n", i->preco);
+	printf("qual o endereco: %s\n", i->local);
+	printf("qual a atracao: %s\n", i->atracao);
+	 
+	}
+//letra c
+ 	void altera_preco(ingresso* i, float valor){
+ 	i->preco=valor;
+ }
+//letra d
+ 	void imprime_menor_maior_preco(int n, ingresso* vet){
+ 		int menor=0, maior=0, i;
+		 for(i=0; i<n; i++);
+		 if(menor>vet [i].preco){ 
+		 menor=vet [i].preco; 
+		 }
+		 if(maior<vet [i].preco){
+		 maior=vet [i].preco;
+	printf("qual o maior e o menor preco %d, %d", menor, maior);
+	}
+}
+
+questão 2 
+//declaração de todas as bibliotecas que vai ser utilizadas
+#include <stdio.h>  
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX 5 //definindo meu define como max 5 e fixando ele
+typedef struct aluno{ 
+//declaração de variaveis e seus tipos
+	int matricula; 
+    char nome[81];
+    char turma;
+    float nota[3];
+    float media;
+}Aluno;
+
+void inicializa(Aluno **alunos, int n){ //meu prototipo da função 
+	int i; //declarando uma variavel do tipo inteiro
+	for(i=0; i<n; i++)
+		alunos[i] = NULL; 
+}
+
+void matricula(int n, Aluno** alunos){
+    static int i = 0;
+    if(i<n){ //if para poder verificar 
+                alunos[i] = (Aluno*) malloc(n*sizeof(Aluno));
+                if(alunos[i]==NULL){
+                        printf("Memoria cheia \n");
+                        exit(1);
+                }
+                else{
+                    printf("numero da matricula: \n qual a turma: \n qual o nome: \n"); //pedindo para o usuario digitir seus dados
+                    scanf(" %d ", &alunos[i]->matricula); //lendo os dados usando ponteiro
+                    scanf(" %c", &alunos[i]->turma);
+                    scanf(" %80[^\n]", alunos[i]->nome);
+                    alunos[i]->nota[0]=0; 
+                    alunos[i]->nota[1]=0;
+                    alunos[i]->nota[2]=0;
+                    alunos[i]->media=0;
+                    i++;
+                }
+            }
+    else
+    {
+      printf("Nao ha vagas"); //printf para saber se ainda tem vagas
+    }
+}
+
+void lanca_notas(int n, Aluno** alunos){//função 
+    int i; 
+    for(i=0;i<n;i++){
+            if(alunos[i]!=NULL){
+                printf("Aluno %d", i+1);
+                    printf("\n Digite as nota:\n");
+                    scanf("%f %f %f", &alunos[i]->nota[0], &alunos[i]->nota[1], &alunos[i]->nota[2]);
+                    alunos[i]->media=(alunos[i]->nota[0] + alunos[i]->nota[1] + alunos[i]->nota[2])/3;
+                    printf("Media: %.2f \n", alunos[i]->media);
+               }
+    }
+}
+
+void imprime_tudo(int n, Aluno** alunos){//função 
+    int i; 
+    for(i=0; i<n; i++){ //laço de repetição para somar 
+            if(alunos[i]!=NULL){
+                printf("\n Matricula:  %d \n", alunos[i]->matricula );//usuario digite sua matricula
+                printf("Nome: %s \n", alunos[i]->nome);//o usuario digite seu nome
+                printf("Turma: %c \n", alunos[i]->turma);//o usuario digite sua turma
+                printf("Media: %f \n", alunos[i]->media);//o usuario digite sua media
+                }
+    }
+}
+
+void imprime_turma(int n, Aluno** alunos, char turma){//função 
+    int i;
+    for(i=0;i<n;i++){
+        if(alunos[i]!=NULL && alunos[i]->turma==turma){
+            printf("\n Matricula:  %d \n", alunos[i]->matricula );//o usuario digita sua matricula
+            printf("Nome: %s \n", alunos[i]->nome);//o usuario digita seu nome
+            printf("Turma: %c \n", alunos[i]->turma);//o usuario digita sua turma
+        }
+    }
+}
+
+void imprime_turma_aprovados(int n, Aluno**alunos, char turma){//função 
+    int i; 
+    for(i=0;i<n;i++){
+        if(alunos[i]!=NULL && alunos[i]->turma==turma){ //verificação da situação se sera verdadeira
+           if(alunos[i]->media>=7){
+                printf("\n Matricula:  %d \n", alunos[i]->matricula);
+                printf("Nome: %s \n", alunos[i]->nome);
+                printf("Media: %f \n, APROVADO \n", alunos[i]->media);//o usuario digita sua media e depois exibindo aluno aprovado
+           }
+        }
+    }
+}
+int main(void){
+    Aluno *aluno[MAX]; //Vetores de ponteiros de struct
+    inicializa(aluno,MAX); //iniciando a função com renomiação aluno, max
+    matricula(MAX,aluno);
+    lanca_notas(MAX, aluno);
+    imprime_tudo(MAX,aluno);
+    imprime_turma(MAX, aluno, 'a');
+    imprime_turma_aprovados(MAX,aluno, 'a');
+
+return 0; //para retornar algo 
+}
+
+Questão 3:
+//declaração de biblioteca
+#include <stdio.h>  
+#include <stdlib.h>
+#include <math.h>
+
+typedef struct retangulo{ 
+    float base; //declaração de variavel
+    float altura;//declaração de variavel
+} Ret; //renomeando minha struct "ret;"
+
+typedef struct circulo{
+    float raio; //declaração de variavel 
+} Circ;//renomeando minha struct com "circ;"
+
+Ret * ret_circunscrito(Circ *c, float h){ //função 
+    Ret *r= malloc(sizeof(Ret)); //função malloc para alocar ret
+    r->base = 2 * sqrt(pow(c->raio, 2) - pow(h, 2));
+    r->altura = h;
+    return r; //retornando em r
+}
+
+Circ * circ_interno(Ret *r){ //função
+    Circ *c = malloc(sizeof(Circ)); //função malloc para alocar circ
+    c->raio = sqrt(pow(r->base, 2) + pow(r->altura, 2)) / 2;
+    return c; //retornando em c
+}
+
+int main(void){   
+    Circ *c = malloc(sizeof(Circ)); //função malloc para alocar circ
+    c->raio = 5;
+    Ret *r = ret_circunscrito(c, 3);
+    printf("Base: %f ", r->base); 
+    printf("Altura: %f ", r->altura);
+    free(c); //liberando memoria
+    free(r); //liberando memoria
+    return 0; //retornar algo
+}
